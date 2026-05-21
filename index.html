@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>澳門《寬窄巷子》火鍋專門店</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --brand-green: #115c41; 
+            --brand-gold: #d4af37;  
+            --brand-red-rich: #d32f2f; 
+            --brand-orange-rich: #ef6c00; 
+            --bg-dark: #050505; 
+            --text-light: #eaeaea;  
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang TC", "Heiti TC", "Microsoft JhengHei", sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: transparent; 
+            color: var(--text-light);
+            line-height: 1.6;
+            position: relative;
+            /* 頂級渲染潤色：啟用全站網頁字體平滑抗鋸齒 */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* 🌃 川渝地區建築物背景層（最底層） */
+        .fixed-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: url('https://images.unsplash.com/photo-1549646450-f8646b14f85e?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            z-index: -4;
+        }
+
+        .extra-bg {
+            position: fixed;
+            top: 0; left: 0; 
+            width: 100vw; 
+            height: 100vh;
+            background-image: url('背景.jpg');
+            background-size: cover;
+            background-position: center 65%;
+            background-repeat: no-repeat;
+            z-index: -3;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* 海底撈級黑金離子漂浮圖層 (純CSS) */
+        .bg-particles {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle at 50% 50%, transparent 20%, rgba(5,5,5,0.4) 80%);
+            z-index: -2;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .bg-particles::after {
+            content: '';
+            position: absolute; top: -10%; left: -10%; width: 120%; height: 120%;
+            background-image: radial-gradient(rgba(212, 175, 55, 0.12) 1px, transparent 1px),
+                              radial-gradient(rgba(239, 108, 0, 0.08) 2px, transparent 2px);
+            background-size: 80px 80px, 120px 120px;
+            animation: particleAnimation 25s linear infinite;
+        }
+        @keyframes particleAnimation {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+            50% { opacity: 0.7; }
+            100% { transform: translateY(-100px) rotate(15deg); opacity: 0.3; }
+        }
+
+        /* 75% 的深色遮罩，確保川渝建築物清晰透出 */
+        .fixed-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: rgba(5, 5, 5, 0.75); 
+            z-index: -1;
+        }
+
+        /* 🟢 海底撈級流暢滾動過渡動效打磨 */
+        .reveal-up { opacity: 0; transform: translateY(60px); transition: all 0.9s cubic-bezier(0.215, 0.610, 0.355, 1); }
+        .reveal-left { opacity: 0; transform: translateX(-60px); transition: all 0.9s cubic-bezier(0.215, 0.610, 0.355, 1); }
+        .reveal-right { opacity: 0; transform: translateX(60px); transition: all 0.9s cubic-bezier(0.215, 0.610, 0.355, 1); }
+        .active { opacity: 1; transform: translate(0, 0) scale(1); }
+
+        /* 🟢 寫入：交錯式延遲排版（讓網格內的卡片一個接一個優雅滑出） */
+        .menu-grid .menu-category:nth-child(1) { transition-delay: 0.1s; }
+        .menu-grid .menu-category:nth-child(2) { transition-delay: 0.25s; }
+        .menu-grid .menu-category:nth-child(3) { transition-delay: 0.4s; }
+        .menu-grid .menu-category:nth-child(4) { transition-delay: 0.55s; }
+
+        .video-grid .video-card:nth-child(1) { transition-delay: 0.1s; }
+        .video-grid .video-card:nth-child(2) { transition-delay: 0.2s; }
+        .video-grid .video-card:nth-child(3) { transition-delay: 0.3s; }
+        .video-grid .video-card:nth-child(4) { transition-delay: 0.4s; }
+        .video-grid .video-card:nth-child(5) { transition-delay: 0.5s; }
+        .video-grid .video-card:nth-child(6) { transition-delay: 0.6s; }
+        .video-grid .video-card:nth-child(7) { transition-delay: 0.7s; }
+        .video-grid .video-card:nth-child(8) { transition-delay: 0.8s; }
+
+        .delivery-card-container .aomi-link-card:nth-child(1) { transition-delay: 0.1s; }
+        .delivery-card-container .aomi-link-card:nth-child(2) { transition-delay: 0.25s; }
+        .delivery-card-container .aomi-link-card:nth-child(3) { transition-delay: 0.4s; }
+        .delivery-card-container .aomi-link-card:nth-child(4) { transition-delay: 0.55s; }
+
+        .text-rich-gradient {
+            background: linear-gradient(90deg, var(--brand-gold), #fff, var(--brand-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .navbar {
+            display: flex; justify-content: space-between; align-items: center; padding: 0 5%;
+            background-color: rgba(5, 5, 5, 0.85); border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+            position: fixed; width: 100%; top: 0; z-index: 1000; height: 80px; backdrop-filter: blur(12px);
+        }
+
+        .logo-container {
+            background-color: var(--brand-green); height: 100px; width: 100px;
+            display: flex; justify-content: center; align-items: center;
+            border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(17, 92, 65, 0.6); transition: all 0.3s;
+            padding: 8px; overflow: hidden;
+        }
+        
+        .logo-container img { width: 100%; height: 100%; object-fit: contain; }
+
+        .nav-links { list-style: none; display: flex; gap: 30px; transition: all 0.4s ease; }
+        .nav-links li a { text-decoration: none; color: var(--brand-gold); font-size: 1.1rem; letter-spacing: 2px; transition: 0.3s; font-weight: 500; }
+        .nav-links li a:hover { color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.8); }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.8rem;
+            color: var(--brand-gold);
+            cursor: pointer;
+            transition: 0.3s;
+            z-index: 1100;
+        }
+
+        .nav-actions { display: flex; align-items: center; gap: 12px; }
+
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px; padding: 10px 24px;
+            border-radius: 30px; text-decoration: none; font-size: 1.1rem; letter-spacing: 1px;
+            transition: all 0.3s ease; border: 1px solid transparent;
+        }
+
+        .btn-outline { background-color: transparent; color: var(--brand-gold); border: 2px solid var(--brand-gold); }
+        .btn-outline:hover { background-color: var(--brand-gold); color: #000; box-shadow: 0 0 15px rgba(212,175,55,0.4); }
+        .btn-icon-only { padding: 0; width: 44px; height: 44px; justify-content: center; border-radius: 50%; font-size: 1.3rem; color: var(--brand-gold); border-color: var(--brand-gold); }
+
+        .btn-rich-gradient {
+            background: linear-gradient(135deg, #ef5350, var(--brand-red-rich), #b71c1c);
+            color: #fff; padding: 12px 30px; font-weight: bold; border: none;
+            box-shadow: 0 5px 15px rgba(211, 47, 47, 0.3); text-align: center; justify-content: center;
+        }
+        .btn-rich-gradient:hover { background: linear-gradient(135deg, var(--brand-orange-rich), #ef5350); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(211, 47, 47, 0.5); }
+
+        .hero { height: 100vh; display: grid; grid-template-columns: 58% 42%; align-items: center; padding: 0 4% 0 2%; margin-top: 0; }
+        .hero-image-container { width: 100%; display: flex; justify-content: center; align-items: center; }
+        .hero-image-container img { width: 100%; max-width: 880px; height: auto; max-height: 95vh; object-fit: contain; filter: drop-shadow(0 0 25px rgba(211, 47, 47, 0.25)); }
+        
+        .hero-content { text-align: left; padding-left: 20px; z-index: 10; }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 20px; line-height: 1.3; text-shadow: 0 0 15px rgba(212, 175, 55, 0.4), 0 0 30px rgba(239, 108, 0, 0.2); }
+        .hero p.slogan { font-size: 1.25rem; color: #ddd; margin-bottom: 35px; letter-spacing: 2px; line-height: 1.8; border-left: 5px solid var(--brand-red-rich); padding-left: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+
+        .hero-motto {
+            display: inline-flex; align-items: center;
+            background: linear-gradient(90deg, rgba(17, 92, 65, 0.3), rgba(211, 47, 47, 0.15));
+            border: 1px solid var(--brand-gold); padding: 8px 22px; border-radius: 30px;
+            margin-bottom: 25px; box-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
+            transition: all 0.3s ease;
+        }
+        .hero-motto:hover { transform: scale(1.03); box-shadow: 0 0 35px rgba(212,175,55,0.4); }
+        .motto-label {
+            font-size: 0.85rem; color: #fff; background: var(--brand-red-rich);
+            padding: 3px 12px; border-radius: 20px; margin-right: 12px; font-weight: bold; letter-spacing: 1px;
+        }
+        .motto-text-content {
+            font-size: 1.25rem; font-weight: bold; letter-spacing: 4px;
+            background: linear-gradient(90deg, var(--brand-gold), #fff, var(--brand-gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
+        }
+
+        section { padding: 80px 5%; }
+        .section-title { font-size: 2.2rem; text-align: center; margin-bottom: 50px; letter-spacing: 3px; }
+
+        /* 全面升級高透明度毛玻璃卡片 */
+        .story-section { 
+            background: rgba(15, 15, 15, 0.55); 
+            border-top: 1px solid rgba(255,255,255,0.04); 
+            border-bottom: 1px solid rgba(255,255,255,0.04); 
+            backdrop-filter: blur(12px); 
+        }
+        .story-content { max-width: 900px; margin: 0 auto; text-align: center; }
+        .story-content p.zh { font-size: 1.15rem; color: #eaeaea; line-height: 2.2; margin-bottom: 30px; letter-spacing: 1.5px; }
+        .story-content p.en { font-size: 1rem; color: #888; line-height: 1.8; font-family: 'Times New Roman', serif; font-style: italic; }
+        .quote-marks { color: var(--brand-red-rich); font-size: 2rem; opacity: 0.8; margin: 0 10px; }
+
+        .tasting-section { 
+            background: rgba(8, 8, 8, 0.5); 
+            border-top: 1px solid rgba(212, 175, 55, 0.15); 
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15); 
+            position: relative; overflow: hidden; backdrop-filter: blur(10px);
+        }
+        .tasting-intro { text-align: center; max-width: 800px; margin: -20px auto 50px auto; color: #ccc; font-size: 1.15rem; line-height: 1.8; letter-spacing: 1px; }
+        .tasting-intro .highlight-soup { color: var(--brand-gold); font-size: 1.3rem; font-weight: bold; display: inline-block; margin-top: 15px; letter-spacing: 2px; border-bottom: 2px dashed var(--brand-gold); padding-bottom: 5px; }
+        .timeline { max-width: 700px; margin: 0 auto; position: relative; padding-left: 60px; }
+        .timeline::before { content: ''; position: absolute; left: 28px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, rgba(212,175,55,0.1), rgba(212,175,55,0.5), rgba(212,175,55,0.1)); }
+        .timeline-item { position: relative; margin-bottom: 60px; opacity: 0; transform: translateX(-30px); transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .timeline-item:last-child { margin-bottom: 0; }
+        .timeline-item.active { opacity: 1; transform: translateX(0); }
+        .timeline-marker { position: absolute; left: -60px; top: 5px; width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #222, #050505); border: 2px solid var(--brand-gold); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 700; color: var(--brand-gold); box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); z-index: 2; transition: 0.3s; }
+        .timeline-item:hover .timeline-marker { background: var(--brand-gold); color: #000; box-shadow: 0 0 25px rgba(212, 175, 55, 0.5); transform: scale(1.05); }
+        .timeline-step { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: var(--brand-orange-rich); margin-bottom: 5px; font-weight: 600; }
+        .timeline-title { font-size: 1.8rem; color: var(--brand-gold); margin-bottom: 12px; font-weight: 700; line-height: 1.3; }
+        .timeline-desc { font-size: 1.05rem; color: #bbb; line-height: 1.8; max-width: 500px; }
+
+        /* ========== 品牌影音選區美化 ========== */
+        .video-section { 
+            background: rgba(5, 5, 5, 0.65); 
+            border-top: 1px solid rgba(212, 175, 55, 0.15); 
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15); 
+            padding: 50px 5%; backdrop-filter: blur(10px);
+        }
+        .video-subtitle { color: var(--brand-gold); text-align: center; font-size: 1.15rem; letter-spacing: 4px; margin-bottom: 20px; font-weight: bold; text-transform: uppercase; border-bottom: 1px dashed rgba(212,175,55,0.2); display: inline-block; left: 50%; transform: translateX(-50%); position: relative; padding-bottom: 4px;}
+        .video-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 1200px; margin: 0 auto 30px auto; }
+        .video-grid.taiwan-grid, .video-grid.smtr25-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 900px; margin: 0 auto 30px auto; }
+        .video-grid.smtr25-grid { margin-bottom: 0; }
+        .video-card { 
+            background: rgba(22, 22, 22, 0.7); border: 1px solid rgba(255,255,255,0.03); border-top: 3px solid var(--brand-red-rich); border-radius: 10px; padding: 25px 15px; text-align: center; text-decoration: none; color: var(--text-light); transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); box-shadow: 0 5px 15px rgba(0,0,0,0.4); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; 
+        }
+        /* 懸停時微亮與向外呼吸發光 */
+        .video-card:hover { transform: translateY(-6px); box-shadow: 0 15px 30px rgba(211, 47, 47, 0.15), 0 0 15px rgba(212,175,55,0.1); border-color: rgba(212, 175, 55, 0.2); }
+        .video-icon { font-size: 2.2rem; color: var(--brand-red-rich); margin-bottom: 12px; transition: 0.3s; }
+        .video-card:hover .video-icon { transform: scale(1.1); }
+        .video-title { font-size: 1.1rem; font-weight: 700; color: var(--brand-gold); margin-bottom: 6px; letter-spacing: 0.5px; }
+        .video-sub { font-size: 0.85rem; color: #888; }
+        
+        .video-card.official-page-card { border-top-color: var(--brand-gold); background: linear-gradient(135deg, rgba(35,30,20,0.7) 0%, rgba(15,15,15,0.8) 100%); }
+        .video-card.official-page-card .video-icon { color: var(--brand-gold); filter: drop-shadow(0 0 8px rgba(212,175,55,0.4)); }
+        
+        .video-card.smtr25-card { border-top-color: #00e5ff; }
+        .video-card.smtr25-card:hover { box-shadow: 0 15px 30px rgba(0, 229, 255, 0.15); border-color: rgba(0, 229, 255, 0.3); }
+
+        .icon-dy { color: #fe2c55; }
+        .icon-xhs { color: #ff2442; }
+
+        .features-section { background: rgba(5, 5, 5, 0.7); border-top: 1px solid #1a1a1a; backdrop-filter: blur(8px); }
+        .features-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 1200px; margin: 0 auto; border-radius: 10px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .feature-card { background: rgba(15, 15, 15, 0.85); padding: 50px 40px; text-align: center; border-right: 1px solid #222; transition: 0.3s; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .feature-card:last-child { border-right: none; }
+        .feature-card:hover { transform: translateY(-5px); background: rgba(25, 15, 15, 0.95); border-bottom: 4px solid var(--brand-red-rich); }
+        .feature-icon { font-size: 3.5rem; color: var(--brand-red-rich); margin-bottom: 25px; filter: drop-shadow(0 0 10px rgba(211, 47, 47, 0.4));}
+        .feature-card h3 { color: var(--brand-gold); margin-bottom: 20px; font-size: 1.5rem; }
+        .feature-card p { color: #bbb; font-size: 1rem; line-height: 1.8; max-width: 350px; }
+
+        .feature-card-list { text-align: left; font-size: 0.95rem; line-height: 1.7; width: 100%; margin-top: 10px; }
+        .feature-card-list strong { color: #fff; }
+        .feature-card-highlight { background: rgba(212, 175, 55, 0.1); border-left: 3px solid var(--brand-gold); padding: 10px 15px; margin-top: 15px; border-radius: 0 8px 8px 0; }
+        .feature-card-highlight span { color: var(--brand-gold); font-weight: bold; font-size: 1.1rem; display: block; margin-bottom: 5px; }
+
+        /* 線上團購 · 外賣平台網格 */
+        .package-section { background: rgba(10, 10, 10, 0.65); border-top: 1px solid #1a1a1a; padding-bottom: 80px; backdrop-filter: blur(10px); }
+        .delivery-card-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .aomi-link-card { 
+            display: block; text-decoration: none; background: rgba(25, 25, 25, 0.7); 
+            border: 1px solid rgba(255,255,255,0.03); border-top: 5px solid var(--brand-orange-rich); padding: 40px 20px; border-radius: 15px; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.8); transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); position: relative; overflow: hidden; 
+        }
+        .aomi-link-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 15px 35px rgba(239, 108, 0, 0.2), 0 0 15px rgba(212,175,55,0.05); border-color: rgba(212, 175, 55, 0.2); }
+        .aomi-link-card.takeout-card { border-top-color: var(--brand-green); }
+        .aomi-link-card.takeout-card:hover { box-shadow: 0 15px 35px rgba(17, 92, 65, 0.2); }
+        
+        .aomi-link-card.mfood-group-card { border-top-color: #ff9800; }
+        .aomi-link-card.mfood-group-card:hover { box-shadow: 0 15px 35px rgba(255, 152, 0, 0.2); }
+        .aomi-link-card.mfood-takeout-card { border-top-color: #ff5722; }
+        .aomi-link-card.mfood-takeout-card:hover { box-shadow: 0 15px 35px rgba(255, 87, 34, 0.2); }
+
+        .aomi-link-card::after { content: '\f35d'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: -15px; bottom: -15px; font-size: 80px; color: rgba(255,255,255,0.01); transition: 0.4s; }
+        .aomi-link-card:hover::after { color: rgba(212, 175, 55, 0.03); transform: scale(1.1); }
+        
+        .package-badge { background: linear-gradient(90deg, var(--brand-red-rich), var(--brand-orange-rich)); color: #fff; padding: 6px 16px; border-radius: 20px; font-size: 0.9rem; display: inline-block; margin-bottom: 15px; letter-spacing: 1px; font-weight: bold; }
+        .package-badge.badge-green { background: linear-gradient(90deg, var(--brand-green), #1b8c5e); }
+        .package-badge.badge-mfood-group { background: linear-gradient(90deg, #ff9800, #ffb74d); color: #000; }
+        .package-badge.badge-mfood-takeout { background: linear-gradient(90deg, #ff5722, #ff8a65); }
+
+        .aomi-link-card h3 { margin-bottom: 15px; color: var(--brand-gold); font-size: 1.4rem; font-weight: bold; line-height: 1.3; }
+        .aomi-link-card .desc { color: #aaa; font-size: 0.95rem; margin-bottom: 10px; line-height: 1.5; }
+        .aomi-link-card .highlight { color: var(--brand-orange-rich); font-size: 0.95rem; font-weight: bold; }
+        .aomi-link-card.takeout-card .highlight { color: var(--brand-green); }
+        .aomi-link-card.mfood-group-card .highlight { color: #ff9800; }
+        .aomi-link-card.mfood-takeout-card .highlight { color: #ff5722; }
+        .aomi-link-card .small-text { font-size: 0.85rem; color: #888; margin-top: 6px; }
+
+        /* =========================================
+           菜單板塊：海底撈級流光對齊線
+           ========================================= */
+        .menu-section { background: rgba(5, 5, 5, 0.75); border-top: 1px solid #111; backdrop-filter: blur(10px); }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto; }
+        .menu-category { background: rgba(22, 22, 22, 0.65); padding: 40px 30px; border-radius: 12px; border-top: 3px solid var(--brand-gold); border: 1px solid rgba(255,255,255,0.02); box-shadow: 0 5px 20px rgba(0,0,0,0.5); transition: all 0.4s ease; }
+        .menu-category:hover { transform: translateY(-5px); border-color: rgba(212, 175, 55, 0.25); box-shadow: 0 15px 35px rgba(0,0,0,0.7), 0 0 15px rgba(212,175,55,0.03); }
+        .menu-category h3 { color: var(--brand-gold); margin-bottom: 25px; border-bottom: 1px solid #333; padding-bottom: 15px; font-size: 1.4rem; text-align: center; letter-spacing: 2px; text-shadow: 0 0 10px rgba(212,175,55,0.2);}
+        
+        .menu-subcategory-title { display: flex; justify-content: space-between; align-items: flex-end; font-size: 0.95rem; color: var(--brand-gold); margin: 25px 0 15px 0; letter-spacing: 1px; border-left: 3px solid var(--brand-red-rich); padding-left: 8px; font-weight: bold; }
+        .menu-subcategory-title .price-header { font-size: 0.85rem; color: #aaa; font-weight: normal; letter-spacing: 0; }
+
+        .menu-item { display: flex; align-items: flex-end; margin-bottom: 18px; transition: 0.3s; }
+        .menu-item:hover .menu-item-name { color: var(--brand-gold); }
+        
+        /* 虛線在懸停時變成流動的發光金邊 */
+        .menu-item:hover .menu-item-dots { border-bottom-color: rgba(212, 175, 55, 0.6); box-shadow: 0 1px 5px rgba(212,175,55,0.4); }
+        
+        .menu-item-name { font-size: 1.05rem; color: #eee; transition: 0.3s; }
+        .menu-item-dots { flex-grow: 1; border-bottom: 1px dashed rgba(255, 255, 255, 0.2); margin: 0 10px; position: relative; top: -6px; transition: all 0.3s ease; }
+        .menu-item-price { color: var(--brand-orange-rich); font-weight: bold; font-size: 1.15rem; white-space: nowrap; transition: 0.3s; }
+        .menu-item:hover .menu-item-price { color: #fff; text-shadow: 0 0 8px var(--brand-orange-rich); }
+
+        .menu-item-desc { font-size: 0.85rem; color: #dae3e5; margin-top: 4px; display: block; letter-spacing: 0.5px; line-height: 1.4; width: 100%; }
+
+        .hot-badge { font-size: 0.75rem; background: linear-gradient(90deg, var(--brand-red-rich), #ff5252); color: white; padding: 2px 6px; border-radius: 4px; margin-left: 6px; vertical-align: middle; font-weight: normal; letter-spacing: 1px; box-shadow: 0 0 8px rgba(211,47,47,0.5); }
+
+        /* 關於我們區塊 */
+        .info-section { background: rgba(10,10,10,0.75); text-align: center; border-top: 1px solid #111; position: relative; overflow: hidden; backdrop-filter: blur(10px); }
+        .info-content { max-width: 800px; margin: 0 auto; background: rgba(24, 24, 24, 0.75); padding: 60px 40px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.03); box-shadow: 0 15px 50px rgba(0,0,0,0.8); position: relative; z-index: 2; }
+        .info-text { margin-bottom: 40px; font-size: 1.1rem; color: #bbb; line-height: 2.2; }
+        .info-text i { color: var(--brand-gold); margin-right: 12px; width: 25px; text-align: center; }
+
+        .ux-action-btn {
+            background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3);
+            color: var(--brand-gold); padding: 4px 12px; border-radius: 6px; font-size: 0.85rem;
+            margin-left: 10px; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 5px;
+        }
+        .ux-action-btn:hover { background: var(--brand-gold); color: #000; box-shadow: 0 0 10px rgba(212,175,55,0.4); }
+
+        /* 彈窗圖庫相冊高級樣式 */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.96); z-index: 2000; justify-content: center; align-items: center; padding: 40px; backdrop-filter: blur(15px);
+        }
+        .modal-container { max-width: 1200px; width: 100%; max-height: 85vh; overflow-y: auto; padding-right: 10px; }
+        .modal-title { font-size: 1.8rem; color: var(--brand-gold); text-align: center; margin-bottom: 30px; letter-spacing: 4px; font-weight: bold; }
+        .modal-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; width: 100%; }
+        .modal-content img { width: 100%; height: 220px; object-fit: cover; border-radius: 10px; border: 2px solid #333; transition: all 0.3s ease; }
+        .modal-content img:hover { border-color: var(--brand-gold); transform: scale(1.03); box-shadow: 0 5px 15px rgba(212,175,55,0.3); }
+        .close-btn { position: fixed; top: 25px; right: 35px; font-size: 3.5rem; color: var(--brand-gold); cursor: pointer; transition: 0.3s; z-index: 2100; line-height: 1; }
+        .close-btn:hover { color: #fff; transform: rotate(90deg); }
+
+        .manifesto-section { background: rgba(5, 5, 5, 0.85); border-top: 1px solid rgba(212, 175, 55, 0.15); border-bottom: 1px solid rgba(212, 175, 55, 0.15); padding: 100px 5%; text-align: center; overflow: hidden; }
+        .manifesto-line { font-size: 1.8rem; color: var(--brand-gold); text-shadow: 0 0 20px rgba(212, 175, 55, 0.7), 0 0 40px rgba(239, 108, 0, 0.3); line-height: 2.2; letter-spacing: 2px; margin-bottom: 25px; opacity: 0; transform: translateY(40px); transition: all 0.9s cubic-bezier(0.25, 0.8, 0.25, 1); font-weight: 500; max-width: 900px; margin-left: auto; margin-right: auto; }
+        .manifesto-line.active { opacity: 1; transform: translateY(0); }
+        .manifesto-line em { font-style: normal; color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.5); background: linear-gradient(90deg, var(--brand-gold), #fff, var(--brand-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700; }
+        .manifesto-separator { width: 100px; height: 2px; background: linear-gradient(90deg, transparent, var(--brand-gold), transparent); margin: 30px auto; opacity: 0; transform: scaleX(0); transition: all 0.9s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .manifesto-separator.active { opacity: 1; transform: scaleX(1); }
+
+        .back-to-top {
+            position: fixed; bottom: 30px; right: 30px; width: 48px; height: 48px;
+            background: linear-gradient(135deg, #222, #050505); border: 2px solid var(--brand-gold);
+            border-radius: 50%; color: var(--brand-gold); display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; cursor: pointer; opacity: 0; visibility: hidden; transition: all 0.4s ease;
+            z-index: 1500; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .back-to-top.show { opacity: 1; visibility: visible; }
+        .back-to-top:hover { background: var(--brand-gold); color: #000; transform: translateY(-4px); box-shadow: 0 8px 25px rgba(212,175,55,0.4); }
+
+        footer { text-align: center; padding: 30px; background: #000; color: #555; font-size: 0.9rem; border-top: 2px solid #111; }
+
+        @media (max-width: 900px) {
+            .navbar { padding: 0 3%; }
+            .logo-container { width: 75px; height: 75px; margin-top: 10px; padding: 5px; }
+
+            .nav-links { 
+                display: none; 
+                flex-direction: column; 
+                position: fixed; 
+                top: 80px; left: 0; width: 100vw; height: calc(100vh - 80px); 
+                background-color: rgba(5, 5, 5, 0.98); 
+                justify-content: center; align-items: center; gap: 30px; 
+                z-index: 999; 
+                backdrop-filter: blur(15px); 
+                border-top: 1px solid rgba(212, 175, 55, 0.15);
+            }
+            .nav-links.mobile-active { display: flex; }
+            .menu-toggle { display: block; }
+
+            .hero { grid-template-columns: 1fr; text-align: center; padding-top: 100px; height: auto; min-height: 100vh; padding-bottom: 40px; }
+            .hero-image-container { margin-bottom: 10px; }
+            .hero-image-container img { max-height: none; max-width: 90%; height: auto; margin: 0 auto; }
+            
+            .hero-content { padding-left: 0; display: flex; flex-direction: column; align-items: center; }
+            .hero h1 { font-size: 2.4rem; margin-bottom: 15px; }
+            .hero p.slogan { border-left: none; padding-left: 0; font-size: 1.05rem; max-width: 90%; }
+            .hero-motto { margin-bottom: 20px; padding: 6px 16px; }
+            .motto-text-content { font-size: 1.15rem; }
+
+            section { padding: 60px 5%; }
+            .section-title { font-size: 1.8rem; margin-bottom: 30px; }
+
+            .timeline { padding-left: 50px; }
+            .timeline::before { left: 23px; }
+            .timeline-marker { left: -50px; width: 46px; height: 46px; font-size: 1.5rem; }
+            .timeline-title { font-size: 1.4rem; }
+
+            .video-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .video-grid.taiwan-grid, .video-grid.smtr25-grid { grid-template-columns: 1fr; gap: 15px; }
+            .video-card { padding: 20px 10px; }
+
+            .delivery-card-container { grid-template-columns: 1fr; gap: 15px; }
+            .aomi-link-card { padding: 30px 15px; }
+
+            .features-grid { grid-template-columns: 1fr; box-shadow: none; border-radius: 0; }
+            .feature-card { border-right: none; border-bottom: 1px solid #333; padding: 40px 20px;}
+            .feature-card:last-child { border-bottom: none; }
+            
+            .info-content { padding: 40px 20px; }
+            .hero .btn-rich-gradient { width: 80%; max-width: 300px; }
+
+            .manifesto-line { font-size: 1.4rem; letter-spacing: 1px; }
+            .manifesto-section { padding: 70px 5%; }
+            .extra-bg { background-position: center 65%; }
+
+            .menu-item-name { font-size: 1rem; }
+            .menu-item-price { font-size: 1rem; }
+            
+            .ux-action-btn { display: none; }
+            .back-to-top { bottom: 20px; right: 20px; width: 42px; height: 42px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="fixed-bg"></div>
+    <div class="extra-bg"></div>
+    
+    <div class="bg-particles"></div>
+    
+    <div class="fixed-overlay"></div>
+
+    <div class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <i class="fas fa-chevron-up"></i>
+    </div>
+
+    <div id="photoModal" class="modal">
+        <span class="close-btn" onclick="closeModal()">×</span>
+        <div class="modal-container">
+            <div class="modal-title">寬窄巷子 · 餐廳環境景觀</div>
+            <div class="modal-content">
+                <img src="photo-1.jpg" alt="餐廳環境景觀 1">
+                <img src="photo-2.jpg" alt="餐廳環境景觀 2">
+                <img src="photo-3.jpg" alt="餐廳環境景觀 3">
+                <img src="photo-5.jpg" alt="餐廳環境景觀 4">
+                <img src="photo-6.jpg" alt="餐廳環境景觀 5">
+                <img src="photo-7.jpg" alt="餐廳環境景觀 6">
+                <img src="photo-8.jpg" alt="餐廳環境景觀 7">
+                <img src="photo-9.jpg" alt="餐廳環境景觀 8">
+                <img src="photo-10.jpg" alt="餐廳環境景觀 9">
+                <img src="photo-11.jpg" alt="餐廳環境景觀 10">
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="logo-container">
+            <img src="logo.png" alt="寬窄巷子 Logo">
+        </div>
+        
+        <ul class="nav-links">
+            <li><a href="#hero" onclick="closeMobileMenu()">首頁</a></li>
+            <li><a href="#story" onclick="closeMobileMenu()">品牌故事</a></li>
+            <li><a href="#tasting" onclick="closeMobileMenu()">八大火鍋經典</a></li>
+            <li><a href="#menu" onclick="closeMobileMenu()">電子菜單</a></li>
+            <li><a onclick="openModal(); closeMobileMenu();" style="color:var(--brand-gold); cursor:pointer; font-weight:bold;">餐廳環境</a></li>
+            <li><a href="#delivery" onclick="closeMobileMenu()">團購外賣</a></li>
+            <li><a href="#videos" onclick="closeMobileMenu()">品牌影音</a></li>
+            <li><a href="#info" onclick="closeMobileMenu()">關於我們</a></li>
+        </ul>
+        
+        <div class="nav-actions">
+            <a href="https://www.google.com/maps/place/%E5%AE%BD%E7%AA%84%E5%B7%B7%E5%AD%90/@22.2072555,113.5379408,1017m/data=!3m2!1e3!4b1!4m6!3m5!1s0x34017b2aa1d0ec87:0x184d16c6269f7536!8m2!3d22.2072506!4d113.5405157!16s%2Fg%2F11h441s8lm?entry=ttu&g_ep=EgoyMDI2MDUxNy4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="btn btn-outline btn-icon-only" title="查看 Google Maps 地圖位置">
+                <i class="fas fa-map-marker-alt"></i>
+            </a>
+            <a href="tel:+85362862662" class="btn btn-rich-gradient">
+                <i class="fas fa-phone"></i> 即時訂位
+            </a>
+            <div class="menu-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars" id="menuIcon"></i>
+            </div>
+        </div>
+    </nav>
+
+    <header id="hero" class="hero">
+        <div class="hero-image-container">
+            <img src="hotpot_pure.png" alt="寬窄巷子招牌火鍋">
+        </div>
+
+        <div class="hero-content reveal-right">
+            <div class="hero-motto">
+                <span class="motto-label">本店宗旨</span>
+                <span class="motto-text-content">食材新鮮</span>
+            </div>
+            
+            <h1 class="text-rich-gradient">澳門《寬窄巷子》<br>火鍋專門店</h1>
+            <p class="slogan">
+                「窗裡映出霓虹閃爍，抬頭寫著寬窄巷子，一瞬恍惚把人從澳門街頭拋回川渝大地。正宗巴蜀老火鍋，自炒底料以示對火鍋的尊重。」
+            </p>
+            <a href="tel:+85362862662" class="btn btn-rich-gradient">
+                <i class="fas fa-phone"></i> 立即撥號訂位
+            </a>
+        </div>
+    </header>
+
+    <section id="story" class="story-section">
+        <h2 class="section-title text-rich-gradient reveal-up">品牌簡介 Brand Story</h2>
+        <div class="story-content reveal-up">
+            <p class="zh">
+                <span class="quote-marks">"</span>
+                澳門《寬窄巷子》火鍋專門店，創立於2017年，為澳門唯一一家堅持傳統古法手工炒制火鍋底料的火鍋專門店。火鍋底料更由老闆親自炒制，零添加劑零防腐劑，全部食材均使用天然新鮮的材料，讓您吃的安心、吃的放心、吃的「盡興」。本店秉持「先飲湯，後吃肉」，從菜品、器皿、服務、環境氛圍，為您創造專屬你的味覺饗宴。
+                <span class="quote-marks">"</span>
+            </p>
+            <p class="en">
+                Fun Cha Hong Chi hot pot specialty shop, was founded in 2017, we are the only hot pot shop in Macau which adhere to utilize the traditional ancient method of hand-fried hot pot ingredients, and the hot pot soup is cook by the founder himself with no additives, no preservatives, all ingredients are natural and fresh. Our motto is "Savour the soup first, enjoy the meat later", from dishes, utensils, services, environmental atmosphere, for you to create your own gourmet journey.
+            </p>
+        </div>
+    </section>
+
+    <section id="tasting" class="tasting-section">
+        <h2 class="section-title text-rich-gradient reveal-up">澳門店八大火鍋經典 · 品味三部曲</h2>
+        <div class="tasting-intro reveal-up">
+            澳門《寬窄巷子》擁有八大獨家熬製的高階養生火鍋湯底。其中，針對鎮店之寶<span class="highlight-soup">「招牌足料花膠雞濃湯鍋」</span>，我們特別傳承了神盛的「先飲湯，後吃肉」三部曲儀式，帶您體驗最極致的味覺層次感：
+        </div>
+        <div class="timeline">
+            <div class="timeline-item reveal-left">
+                <div class="timeline-marker">1</div>
+                <div class="timeline-step">第一口</div>
+                <div class="timeline-title">原湯·花膠</div>
+                <div class="timeline-desc">感受最純粹的香氣與底蘊，品味天然食材交織的原始鮮甜與滿滿膠質。</div>
+            </div>
+            <div class="timeline-item reveal-left">
+                <div class="timeline-marker">2</div>
+                <div class="timeline-step">第二口</div>
+                <div class="timeline-title">加入燕窩</div>
+                <div class="timeline-desc">奢華融合頂級燕窩，讓湯底變得更溫潤細緻，滑順口感中帶出深層滋養。</div>
+            </div>
+            <div class="timeline-item reveal-left">
+                <div class="timeline-marker">3</div>
+                <div class="timeline-step">第三口</div>
+                <div class="timeline-title">食材入鍋之後</div>
+                <div class="timeline-desc">隨著各類頂級海陸食材入鍋，精華匯聚，湯底演變成完整而豐滿的終極風味。</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features-section">
+        <div class="features-grid">
+            <div class="feature-card reveal-left">
+                <i class="fas fa-hand-sparkles feature-icon"></i>
+                <h3>澳門唯一堅持傳統古法炮製</h3>
+                <p>澳門唯一堅持傳統古法，紅油底料由老闆親力親為手工炒制，火候精準，還原最道地的重慶麻辣鮮香。</p>
+            </div>
+            <div class="feature-card reveal-up">
+                <i class="fas fa-leaf feature-icon"></i>
+                <h3>零添加・純天然</h3>
+                <p>嚴選天然新鮮的材料，零添加劑、零防腐劑。吃得安心、吃得放心、吃得「盡興」，健康零負擔。</p>
+            </div>
+            <div class="feature-card reveal-right">
+                <i class="fas fa-mug-hot feature-icon"></i>
+                <h3>八大經典鍋底 · 先飲湯後吃肉</h3>
+                <div class="feature-card-list">
+                    <strong>八大傳奇系列：</strong>正宗重慶血旺豆腐麻辣鍋、特濃鮮榨蕃茄湯底（小朋友最愛）、無花果木瓜五指毛桃鍋、百香果貴州酸湯鍋、手工炒製麻辣廣東辣鍋、整顆蕃茄鍋、濃香竹笙椰肉湯鍋、澳門胡椒豬肚湯鍋。<br>
+                    <div class="feature-card-highlight">
+                        <span>🌟 獨尊招牌：花膠雞濃湯鍋</span>
+                        嚴選頂級花膠與純手工燕窩交織出的養生金湯，完美遵循三部曲儀式，品味殿堂級巴蜀火鍋藝術。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="delivery" class="package-section">
+        <h2 class="section-title text-rich-gradient reveal-up">線上團購 · 外賣平台</h2>
+        
+        <div class="delivery-card-container">
+            <a href="https://h5.aomiapp.com/multiple/purchase.html#/storeDetail?id=20471&target=GROUP_GOODS%2Fapp%2Fstoreinfo%3Fid%3D20471" 
+               target="_blank" 
+               class="aomi-link-card reveal-left">
+                <span class="package-badge"><i class="fas fa-tags"></i> 澳覓 APP 團購</span>
+                <h3>超值團購套餐<br>現已登陸澳覓</h3>
+                <p class="desc">點擊此處，一鍵喚醒「澳覓 APP」</p>
+                <p class="highlight">立即查看超值雙人/四人套餐及最新折扣！</p>
+            </a>
+
+            <a href="https://h5.aomiapp.com/takeout/#/subpages/orderingPage/index?storeId=26961&utm_source=WX&utm_medium=PYQ" 
+               target="_blank" 
+               class="aomi-link-card takeout-card reveal-up">
+                <span class="package-badge badge-green"><i class="fas fa-motorcycle"></i> 澳覓 APP 外賣</span>
+                <h3>一鍵外賣送到家</h3>
+                <p class="desc">外賣時間：11:30-14:30 / 17:30-23:30</p>
+                <p class="highlight">單人小湯鍋 · 燒烤 · 手打檸檬茶</p>
+                <p class="small-text">滿$240減$15 · 滿$340減$20 · 折扣商品5.8折起</p>
+            </a>
+
+            <a href="https://activity.h5-mfoodapp.com/#/group/store?id=202501092017197052415" 
+               target="_blank" 
+               class="aomi-link-card mfood-group-card reveal-up">
+                <span class="package-badge badge-mfood-group"><i class="fas fa-store"></i> mFood 團購</span>
+                <h3>mFood 門店團購<br>奢華超值套餐</h3>
+                <p class="desc">點擊此處，輕鬆查看 mFood 獨家團購</p>
+                <p class="highlight">搶購當季爆款火鍋與專屬線下饗宴優惠！</p>
+            </a>
+
+            <a href="https://activity.h5-mfoodapp.com/#/share?id=202101191413590325615" 
+               target="_blank" 
+               class="aomi-link-card mfood-takeout-card reveal-right">
+                <span class="package-badge badge-mfood-takeout"><i class="fas fa-shipping-fast"></i> mFood 外賣</span>
+                <h3>mFood 智能速達</h3>
+                <p class="desc">足不出戶，全城極速配送新鮮美味</p>
+                <p class="highlight">巴蜀極致工藝火鍋與川味涮品，一鍵即達！</p>
+                <p class="small-text">嚴選天然底料與新鮮食材，當天送到府上</p>
+            </a>
+        </div>
+    </section>
+
+    <section id="menu" class="menu-section">
+        <h2 class="section-title text-rich-gradient reveal-up">精選菜品推薦 Menu</h2>
+        <div class="menu-grid">
+            
+            <div class="menu-category reveal-left">
+                <h3><i class="fas fa-hot-tub"></i> 招牌湯底精選</h3>
+                
+                <div class="menu-subcategory-title">
+                    <span>八大經典鍋底 (MOP)</span>
+                    <span class="price-header">鴛鴦鍋 / 全鍋</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">正宗重慶血旺豆腐麻辣鍋 <span class="hot-badge">✨ 招牌靈魂</span></span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$68 / $118</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">花膠雞濃湯鍋（花膠雞燕窩） <span class="hot-badge">🔥 鎮店之寶</span></span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$88 / $118</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">無花果木瓜五指毛桃鍋</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$68 / $98</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">百香果貴州酸湯鍋</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$68 / $98</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">手工炒製麻辣廣東辣鍋</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$58 / $108</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">特濃鮮榨蕃茄湯底（小朋友最愛）</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$58 / $88</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">濃香竹笙椰肉湯鍋</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$58 / $88</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">澳門胡椒豬肚湯鍋</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$48 / $78</span>
+                </div>
+            </div>
+
+            <div class="menu-category reveal-up">
+                <h3><i class="fas fa-crown"></i> 寬窄十二金剛</h3>
+                <div class="menu-subcategory-title">
+                    <span>必點頂級涮品 (MOP)</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">手撕脆毛肚</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$88</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">一朵金耳菌</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$48</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">大刀腰片（廚師刀工切得很薄沒有臊味） <span class="hot-badge">👍 必點</span></span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$68</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">九尺鵝腸</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$68</span>
+                </div>
+                
+                <div class="menu-item" style="flex-direction: column; align-items: flex-start; margin-bottom: 18px;">
+                    <div style="display: flex; width: 100%; align-items: flex-end;">
+                        <span class="menu-item-name">手打黑虎蝦滑（藍寶石） 💎 <span class="hot-badge">🌟 明星必點</span></span>
+                        <div class="menu-item-dots"></div>
+                        <span class="menu-item-price">$78</span>
+                    </div>
+                    <span class="menu-item-desc">它在燈光下會呈現藍寶石般的天然閃耀色澤，凸顯食材極致新鮮</span>
+                </div>
+                
+                <div class="menu-item">
+                    <span class="menu-item-name">手打墨魚滑</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$78</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">屠場豬黃喉</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$68</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">雙椒肉滑</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$78</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">滑蛋牛肉</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$78</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">黃金六禮 (手切梅肉)</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$68</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">串串小郡肝</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$58</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">拆骨三黃雞</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$88 / $148</span>
+                </div>
+            </div>
+            
+            <div class="menu-category reveal-right">
+                <h3><i class="fas fa-drumstick-bite"></i> 寬窄燒烤精選系列</h3>
+                <div class="menu-subcategory-title">人氣夯品 (MOP)</div>
+                <div class="menu-item">
+                    <span class="menu-item-name">糖醋雞架 <span class="hot-badge">🔥 必點 NO.1</span></span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$48 / 份</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">爆汁大油邊</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$26 / 串</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">紅柳枝牛肉串</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$88 / 5串</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">呼倫貝爾羊肉串</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$58 / 5串</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">鐵板大魷魚</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$28 / 串</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">生烤跳跳蛙</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$48 / 隻</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">抱抱肥腸蒜 / 蔥</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$9 / 串</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">首創藤椒油黃雞</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$12 / 串</span>
+                </div>
+            </div>
+            
+            <div class="menu-category reveal-left">
+                <h3><i class="fas fa-glass-teatime"></i> 寬茶舍 · 飲料精選</h3>
+                
+                <div class="menu-subcategory-title">
+                    <span>純手工無負擔茶飲 (MOP)</span>
+                    <span class="price-header">中杯 / 大杯</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">三重檸檬大爆炸 <span class="hot-badge">🔥 招牌爆款</span></span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$30 / $38</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">鳳梨話梅檸檬</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$30 / $38</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">香水檸檬</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$28 / $36</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">滿杯甜橙</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$28 / $36</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">羽衣甘藍檸檬茶 <span class="hot-badge">限定</span></span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">- / $32</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">芝芝抹茶厚乳</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$32 / -</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">生椰抹茶白月光</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$32 / -</span>
+                </div>
+                <div class="menu-item">
+                    <span class="menu-item-name">玉露白桃輕乳茶</span>
+                    <div class="menu-item-dots"></div>
+                    <span class="menu-item-price">$28 / -</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="videos" class="video-section">
+        <h2 class="section-title text-rich-gradient reveal-up" style="margin-bottom: 30px;">品牌影音 · 媒體紀實</h2>
+        
+        <div class="video-subtitle reveal-up">— 澳門篇 Macau —</div>
+        <div class="video-grid">
+            <a href="https://www.facebook.com/spicyhotpotmomacau/" target="_blank" class="video-card official-page-card reveal-up">
+                <i class="fab fa-facebook video-icon"></i>
+                <div class="video-title">官方 Facebook 專頁</div>
+                <div class="video-sub">關注獲取最新盛宴資訊</div>
+            </a>
+            <a href="https://v.douyin.com/bwk8_XV0TJk/" target="_blank" class="video-card reveal-up">
+                <i class="fab fa-tiktok video-icon icon-dy"></i>
+                <div class="video-title">澳門火爆現場 ➊</div>
+                <div class="video-sub">打開 抖音短影音</div>
+            </a>
+            <a href="https://v.douyin.com/wMvu6ZPnna4/" target="_blank" class="video-card reveal-up">
+                <i class="fab fa-tiktok video-icon icon-dy"></i>
+                <div class="video-title">澳門火爆現場 ➋</div>
+                <div class="video-sub">打開 抖音短影音</div>
+            </a>
+            <a href="https://v.douyin.com/7YCtBm36sx8/" target="_blank" class="video-card reveal-up">
+                <i class="fab fa-tiktok video-icon icon-dy"></i>
+                <div class="video-title">澳門火爆現場 ➌</div>
+                <div class="video-sub">打開 抖音短影音</div>
+            </a>
+            <a href="https://www.facebook.com/reel/807207850521515" target="_blank" class="video-card reveal-up">
+                <i class="fab fa-facebook video-icon"></i>
+                <div class="video-title">探店特擊 ➍</div>
+                <div class="video-sub">打開 Facebook Reel</div>
+            </a>
+            <a href="https://v.douyin.com/IItV7qj_kiw/" target="_blank" class="video-card reveal-up">
+                <i class="fab fa-tiktok video-icon icon-dy"></i>
+                <div class="video-title">經典傳承 ➎</div>
+                <div class="video-sub">打開 抖音短影音</div>
+            </a>
+            <a href="https://www.xiaohongshu.com/discovery/item/6a0c24f400000000350272de?app_platform=ios&app_version=9.30.1&share_from_user_hidden=true&xsec_source=app_share&type=normal&xsec_token=CB7EES3RXblDgM_-fXFmq7myNQux7ji8oBsWYFSU5mzkA=&author_share=1&xhsshare=WeixinSession&shareRedId=N0k6MjtGNz02NzUyOTgwNjc5OTc5SUw7&apptime=1779186355&share_id=90a3c9b095e042b79bbb786b229f264e" target="_blank" class="video-card reveal-up">
+                <i class="fas fa-hashtag video-icon icon-xhs"></i>
+                <div class="video-title">爆款筆記 ➏</div>
+                <div class="video-sub">前往 小紅書筆記</div>
+            </a>
+            <a href="https://www.xiaohongshu.com/login?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fexplore%2F6a0c2740000000003502842a%3Fapp_platform%3Dios%26app_version%3D9.30.1%26share_from_user_hidden%3Dtrue%26xsec_source%3Dapp_share%26type%3Dnormal%26xsec_token%3DCB7EES3RXblDgM_-fXFmq7m2j4lcHhwvMgn8fCRepFxdQ%3D%26author_share%3D1%26xhsshare%3DWeixinSession%26shareRedId%3DN0k6MjtGNz02NzUyOTgwNjc5OTc5SUw7%26apptime%3D1779186378%26share_id%3D6acced74cdc14ac9a78251ffce0a942b" target="_blank" class="video-card reveal-up">
+                <i class="fas fa-hashtag video-icon icon-xhs"></i>
+                <div class="video-title">視覺盛宴 ➐</div>
+                <div class="video-sub">前往 小紅書精選</div>
+            </a>
+        </div>
+
+        <div class="video-subtitle reveal-up">— Smtr25 男團連續兩年光臨特輯 —</div>
+        <div class="video-grid smtr25-grid">
+            <a href="http://xhslink.com/o/8Vf2fpyKZIc" target="_blank" class="video-card smtr25-card reveal-up">
+                <i class="fas fa-hashtag video-icon icon-xhs"></i>
+                <div class="video-title">Smtr25特輯 ➊</div>
+                <div class="video-sub">打開 小紅書精彩現場</div>
+            </a>
+            <a href="http://xhslink.com/o/9WNzPDRWG0q" target="_blank" class="video-card smtr25-card reveal-up">
+                <i class="fas fa-hashtag video-icon icon-xhs"></i>
+                <div class="video-title">Smtr25特輯 ➋</div>
+                <div class="video-sub">打開 小紅書精彩現場</div>
+            </a>
+            <a href="http://xhslink.com/o/5gngdYDSwna" target="_blank" class="video-card smtr25-card reveal-up">
+                <i class="fas fa-hashtag video-icon icon-xhs"></i>
+                <div class="video-title">Smtr25特輯 ➌</div>
+                <div class="video-sub">打開 小紅書精彩現場</div>
+            </a>
+            <a href="http://xhslink.com/o/5WoJqiGMVc7" target="_blank" class="video-card smtr25-card reveal-up">
+                <i class="fas fa-hashtag video-icon icon-xhs"></i>
+                <div class="video-title">Smtr25特輯 ➍</div>
+                <div class="video-sub">打開 小紅書精彩現場</div>
+            </a>
+            <a href="http://xhslink.com/o/2UK72pdmW1Z" target="_blank" class="video-card smtr25-card reveal-up">
+                <i class="fas fa-hashtag video-icon icon-xhs"></i>
+                <div class="video-title">Smtr25特輯 ➎</div>
+                <div class="video-sub">打開 小紅書精彩現場</div>
+            </a>
+            <a href="http://xhslink.com/o/414kZX7xNYl" target="_blank" class="video-card smtr25-card reveal-up">
+                <i class="fas fa-hashtag video-icon icon-xhs"></i>
+                <div class="video-title">Smtr25特輯 ➏</div>
+                <div class="video-sub">打開 小紅書精彩現場</div>
+            </a>
+        </div>
+
+        <div class="video-subtitle reveal-up" style="margin-top: 40px;">— 台灣篇 Taiwan —</div>
+        <div class="video-grid taiwan-grid">
+            <a href="https://www.facebook.com/reel/2722818644755186" target="_blank" class="video-card reveal-up">
+                <i class="fab fa-facebook video-icon"></i>
+                <div class="video-title">台灣特輯 ➊</div>
+                <div class="video-sub">觀看 Facebook Reel</div>
+            </a>
+            <a href="https://www.facebook.com/reel/766707746528236" target="_blank" class="video-card reveal-up">
+                <i class="fab fa-facebook video-icon"></i>
+                <div class="video-title">台灣特輯 ➋</div>
+                <div class="video-sub">觀看 Facebook Reel</div>
+            </a>
+            <a href="https://www.facebook.com/Kuanerdai/" target="_blank" class="video-card reveal-up">
+                <i class="fab fa-facebook video-icon"></i>
+                <div class="video-title">台灣官方專頁</div>
+                <div class="video-sub">前往 臉書粉絲頁</div>
+            </a>
+        </div>
+    </section>
+
+    <section id="info" class="info-section">
+        <h2 class="section-title text-rich-gradient reveal-up">關於我們</h2>
+        <div class="info-content reveal-up">
+            <div class="info-text">
+                <p><i class="fas fa-clock"></i> <strong>營業時間：</strong></p>
+                <p>午市：11:30 - 14:30 ｜ 晚市：17:00 - 00:00</p>
+                <br>
+                <p><i class="fas fa-phone"></i> <strong>訂座電話：</strong></p>
+                <p>+853 6286 2662 <a href="tel:+85362862662" class="ux-action-btn"><i class="fas fa-phone-alt"></i> 智慧撥號</a></p>
+                <br>
+                <p><i class="fab fa-weixin"></i> <strong>WeChat 微信客服：</strong></p>
+                <p>6286 2662</p>
+                <br>
+                <p><i class="fas fa-map-marker-alt"></i> <strong>門店地址：</strong></p>
+                <p id="storeAddress">澳門俾若翰街479號綠楊花園（第四座利和閣 Lei Hong Kuok）H舖 寬窄巷子 <button onclick="copyAddress()" class="ux-action-btn"><i class="far fa-copy"></i> 智慧複製</button></p>
+            </div>
+            <a href="https://www.google.com/maps/place/%E5%AE%BD%E7%AA%84%E5%B7%B7%E5%AD%90/@22.2072555,113.5379408,1017m/data=!3m2!1e3!4b1!4m6!3m5!1s0x34017b2aa1d0ec87:0x184d16c6269f7536!8m2!3d22.2072506!4d113.5405157!16s%2Fg%2F11h441s8lm?entry=ttu&g_ep=EgoyMDI2MDUxNy4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="btn btn-outline" style="margin-top: 10px;">
+                <i class="fas fa-location-arrow"></i> 一鍵 Google Maps 導覽
+            </a>
+        </div>
+    </section>
+
+    <section id="manifesto" class="manifesto-section">
+        <p class="manifesto-line reveal-up">這不只是火鍋，<br>而是一段會被記住的味覺過程。</p>
+        <div class="manifesto-separator reveal-up"></div>
+        <p class="manifesto-line reveal-up">辣而不燥，麻而不苦，<br>鮮醇入味。</p>
+        <div class="manifesto-separator reveal-up"></div>
+        <p class="manifesto-line reveal-up">我們希望你帶走的，<br>不職是飽足，<br>而是一段<em>「物超所值」</em>的味覺回憶。</p>
+    </section>
+
+    <footer>
+        <p>© <span id="currentYear"></span> 澳門《寬窄巷子》火鍋專門店. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            const menuIcon = document.getElementById('menuIcon');
+            navLinks.classList.toggle('mobile-active');
+            if (navLinks.classList.contains('mobile-active')) {
+                menuIcon.className = 'fas fa-times';
+            } else {
+                menuIcon.className = 'fas fa-bars';
+            }
+        }
+
+        function closeMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            const menuIcon = document.getElementById('menuIcon');
+            if (navLinks.classList.contains('mobile-active')) {
+                navLinks.classList.remove('mobile-active');
+                menuIcon.className = 'fas fa-bars';
+            }
+        }
+
+        function openModal() { document.getElementById('photoModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('photoModal').style.display = 'none'; }
+
+        function copyAddress() {
+            const addressText = "澳門俾若翰街479號綠楊花園（第四座利和閣 Lei Hong Kuok）H舖 寬窄巷子";
+            navigator.clipboard.writeText(addressText).then(() => {
+                alert("地址已成功複製到您的剪貼簿！可直接粘貼導航。");
+            });
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById('currentYear').innerText = new Date().getFullYear();
+
+            const backToTopBtn = document.getElementById('backToTop');
+            
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 400) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            /* 🟢 升級交錯式淡入 IntersectionObserver 開發者邏輯（讓各版塊滾到畫面時，卡片按順序優雅滑出） */
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // 🟢 如果是網格容器，自動將內部的子卡片通通激活起動效
+                        const childCards = entry.target.querySelectorAll('.menu-category, .video-card, .aomi-link-card');
+                        childCards.forEach(card => card.classList.add('active'));
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, observerOptions);
+
+            // 監聽所有主容器與動畫元素
+            const revealElements = document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right, .timeline-item, .manifesto-line, .manifesto-separator, .menu-grid, .video-grid, .delivery-card-container');
+            revealElements.forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
